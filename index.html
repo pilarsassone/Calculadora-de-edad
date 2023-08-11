@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="shortcut icon" href="img/calculadora.png" type="image">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,700;1,400;1,700&family=Roboto&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styleshett.css">
+
+
+    <title>Calculadora de edad</title>
+</head>
+<body>
+    <div class="container">
+        <div class="calculadora">
+
+            <h1>Calculadora<br><span>de edad</span> </h1>
+            <div class="input">
+                <input type="date" id="date">
+                <button onclick="CalcularEdad()">Calcular</button>
+
+                
+            </div>
+            <p id="resultado"></p>
+        </div>
+    </div>
+
+
+<script>
+    let userInput=document.getElementById("date");
+
+    userInput.max=new Date().toISOString().split("T")[0];
+
+    let result=document.getElementById("resultado")
+
+    /*es parq eu no puedas seleccionar fechas a futuro, solo pasadas, tiene sentido porque calcula la edad, no puedo calcular edades futuras
+
+    userInput.max: Establece la propiedad max del elemento HTML seleccionado (userInput). En este contexto, max es un atributo que se puede aplicar a elementos <input> de tipo "date" para especificar la fecha máxima que se puede seleccionar.
+
+new Date(): Crea un nuevo objeto de fecha con la fecha y hora actuales.
+
+.toISOString(): Convierte el objeto de fecha en una cadena en formato de fecha y hora ISO 8601.
+
+.split("T")[0]: Divide la cadena ISO 8601 en partes utilizando la letra "T" como separador y toma solo la parte de la fecha, que es el primer elemento del arreglo resultante.
+    
+    */
+   
+
+
+function CalcularEdad() {
+    let fecha = new Date(userInput.value);
+
+    let d1 = fecha.getDate();
+    let m1 = fecha.getMonth() + 1; // Sumamos 1 ya que los meses en JavaScript van de 0 a 11
+    let y1 = fecha.getFullYear();
+
+    let hoy = new Date();
+
+    let d2 = hoy.getDate();
+    let m2 = hoy.getMonth() + 1;
+    let y2 = hoy.getFullYear();
+
+    let d3, m3, y3;
+
+    y3 = y2 - y1;
+
+    if (m2 >= m1) {
+        m3 = m2 - m1;
+    } else {
+        y3--;
+        m3 = 12 + m2 - m1;
+    }
+
+    if (d2 >= d1) {
+        d3 = d2 - d1;
+    } else {
+        m3--;
+        d3 = getDaysInMonth(y1, m3) + d2 - d1; // Corregido: usar m3 en lugar de m1
+    }
+
+    if (m3 < 0) {
+        m3 = 11;
+        y3--;
+    }
+
+    result.innerHTML = `Tienes <span>${y3}</span> años, <span>${m3}</span> meses, <span>${d3}</span> días`;
+
+}
+
+function getDaysInMonth(year, month) {
+    return new Date(year, month, 0).getDate();
+}
+
+</script>
+
+</body>
+</html>
